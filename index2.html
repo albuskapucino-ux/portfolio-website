@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитика рынка недвижимости Минска 2026</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #d35400; 
+            --accent: #3498db;
+            --light: #f4f7f6;
+            --white: #ffffff;
+            --text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            color: #333;
+            background-color: var(--light);
+        }
+
+        header, nav, section, footer {
+            padding: 25px;
+            max-width: 1100px;
+            margin: 20px auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        /* Баннер: вернули старое фото ночного города */
+        header.banner {
+            background-color: #1a252f;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), 
+                              url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=80');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            color: var(--white);
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: none;
+            margin-top: 0;
+            position: relative;
+        }
+
+        header h1 { 
+            font-size: 3.5em; 
+            margin: 0 0 15px 0; 
+            text-shadow: var(--text-shadow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header p {
+            font-size: 1.4em;
+            margin: 0;
+            text-shadow: var(--text-shadow);
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            color: #f8f9fa;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        article {
+            position: relative;
+            padding: 25px;
+            border-radius: 12px;
+            min-height: 480px; 
+            display: flex;
+            flex-direction: column;
+            background-color: #2c3e50; 
+            background-size: cover;
+            background-position: center;
+            color: white;
+            overflow: hidden;
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        article::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+
+        article:hover { 
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        article > * {
+            position: relative;
+            z-index: 5;
+        }
+
+        .card-spacer {
+            flex-grow: 1;
+        }
+
+        /* ИСПРАВЛЕНИЕ ЛИНИЙ: Рисуем линию жестко поверх всего */
+        .card-title {
+            margin: 0 0 15px 0;
+            font-size: 1.6em;
+            color: var(--white);
+            width: 100%;
+            padding-bottom: 12px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 4px; /* Яркая и толстая линия */
+            background-color: var(--secondary);
+            border-radius: 2px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.8); /* Тень, чтобы линия 100% читалась */
+            z-index: 10;
+        }
+
+        /* ИСПРАВЛЕНИЕ: Убрали фиксированную высоту, теперь блок не перекрывает линию */
+        .card-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 10;
+        }
+
+        .price-history {
+            width: 100%;
+            margin: 0 0 15px 0;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(3px);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .price-history th, .price-history td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price-history th {
+            background: rgba(0, 0, 0, 0.4);
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-details p { margin: 5px 0; font-size: 0.9em; line-height: 1.4; color: #f1f2f6; }
+        .card-details strong { font-size: 1.1em; color: #fff; }
+
+        details {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        summary { font-weight: bold; color: var(--accent); }
+
+        meter { 
+            width: 100%; 
+            height: 10px; 
+            margin: 8px 0;
+        }
+
+        form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+        label { font-weight: 600; font-size: 0.9em; }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 2px solid #edf2f7;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--accent); }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        button:hover { background-color: #bf4600; }
+
+        footer {
+            text-align: center;
+            background: var(--primary);
+            color: #bdc3c7;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            nav ul { flex-direction: column; align-items: center; gap: 10px; }
+            header h1 { font-size: 2.2em; }
+            header.banner { height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#trends">Тренды 2026</a></li>
+            <li><a href="#districts">Районы Минска</a></li>
+            <li><a href="#request">Заказать отчет</a></li>
+        </ul>
+    </nav>
+
+    <!-- Баннер со старым фото ночного города -->
+    <header id="home" class="banner">
+        <h1>Недвижимость Минска 2026</h1>
+        <p>Профессиональный анализ локального рынка и прогноз ценовых колебаний</p>
+    </header>
+
+    <main>
+        <section id="trends">
+            <h2>Тенденции столичного рынка 2026</h2>
+            <p>Текущий год характеризуется ростом интереса к энергоэффективным домам и кварталам с концепцией «двор без машин».</p>
+            
+            <details>
+                <summary>Прогноз по Зеленолужской линии метро</summary>
+                <p>Ввод новых станций третьей линии метрополитена в 2026 году ожидаемо поднимает стоимость квадратного метра в радиусе 1 км на 8-12%.</p>
+            </details>
+
+            <details>
+                <summary>Условия кредитования в BYN</summary>
+                <p>Кредитные продукты в белорусских рублях остаются основным инструментом покупки первичного жилья для жителей столицы.</p>
+            </details>
+        </section>
+
+        <section id="districts">
+            <h2>Рейтинг районов и динамика цен</h2>
+            <p>Статистика изменения стоимости BYN/м² за период 2022-2026 гг.:</p>
+            
+            <div class="content-grid">
+                
+                <!-- 1. Центральный -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Центральный</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 800 BYN</td></tr>
+                                <tr><td>2023</td><td>4 100 BYN</td></tr>
+                                <tr><td>2024</td><td>4 450 BYN</td></tr>
+                                <tr><td>2025</td><td>4 800 BYN</td></tr>
+                                <tr><td>2026</td><td>5 200 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Инвест. потенциал:</label>
+                        <meter value="0.95" min="0" max="1">95%</meter>
+                        <p>Престижная локация, стабильный рост.</p>
+                    </div>
+                </article>
+
+                <!-- 2. Советский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Советский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 700 BYN</td></tr>
+                                <tr><td>2023</td><td>4 050 BYN</td></tr>
+                                <tr><td>2024</td><td>4 350 BYN</td></tr>
+                                <tr><td>2025</td><td>4 750 BYN</td></tr>
+                                <tr><td>2026</td><td>5 100 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Популярность:</label>
+                        <meter value="0.88" min="0" max="1">88%</meter>
+                        <p>Центр города, развитая инфраструктура.</p>
+                    </div>
+                </article>
+
+                <!-- 3. Первомайский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Первомайский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 600 BYN</td></tr>
+                                <tr><td>2023</td><td>3 900 BYN</td></tr>
+                                <tr><td>2024</td><td>4 250 BYN</td></tr>
+                                <tr><td>2025</td><td>4 600 BYN</td></tr>
+                                <tr><td>2026</td><td>4 950 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Экологичность:</label>
+                        <meter value="0.90" min="0" max="1">90%</meter>
+                        <p>Экологичный район, обилие парковых зон.</p>
+                    </div>
+                </article>
+
+                <!-- 4. Октябрьский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Октябрьский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 100 BYN</td></tr>
+                                <tr><td>2023</td><td>3 400 BYN</td></tr>
+                                <tr><td>2024</td><td>3 750 BYN</td></tr>
+                                <tr><td>2025</td><td>4 050 BYN</td></tr>
+                                <tr><td>2026</td><td>4 350 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Строительство:</label>
+                        <meter value="0.98" min="0" max="1">98%</meter>
+                        <p>Бурное развитие за счет современных ЖК.<br>Основной драйвер роста — «Минск-Мир».</p>
+                    </div>
+                </article>
+
+                <!-- 5. Московский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Московский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 400 BYN</td></tr>
+                                <tr><td>2023</td><td>3 750 BYN</td></tr>
+                                <tr><td>2024</td><td>4 000 BYN</td></tr>
+                                <tr><td>2025</td><td>4 300 BYN</td></tr>
+                                <tr><td>2026</td><td>4 600 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Инфраструктура:</label>
+                        <meter value="0.85" min="0" max="1">85%</meter>
+                        <p>Удобное метро, много молодежи и студентов.</p>
+                    </div>
+                </article>
+
+                <!-- 6. Фрунзенский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1460472178825-e5240623afd5?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Фрунзенский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 100 BYN</td></tr>
+                                <tr><td>2023</td><td>3 350 BYN</td></tr>
+                                <tr><td>2024</td><td>3 600 BYN</td></tr>
+                                <tr><td>2025</td><td>3 900 BYN</td></tr>
+                                <tr><td>2026</td><td>4 250 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Спрос на вторичку:</label>
+                        <meter value="0.80" min="0" max="1">80%</meter>
+                        <p>Самый густонаселенный район, доступные цены.</p>
+                    </div>
+                </article>
+
+                <!-- 7. Ленинский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Ленинский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 300 BYN</td></tr>
+                                <tr><td>2023</td><td>3 600 BYN</td></tr>
+                                <tr><td>2024</td><td>3 950 BYN</td></tr>
+                                <tr><td>2025</td><td>4 250 BYN</td></tr>
+                                <tr><td>2026</td><td>4 550 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Реновация:</label>
+                        <meter value="0.75" min="0" max="1">75%</meter>
+                        <p>Лошица и центр, хороший природный баланс.</p>
+                    </div>
+                </article>
+
+                <!-- 8. Партизанский -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Партизанский</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>3 200 BYN</td></tr>
+                                <tr><td>2023</td><td>3 500 BYN</td></tr>
+                                <tr><td>2024</td><td>3 800 BYN</td></tr>
+                                <tr><td>2025</td><td>4 100 BYN</td></tr>
+                                <tr><td>2026</td><td>4 400 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Зеленые зоны:</label>
+                        <meter value="0.65" min="0" max="1">65%</meter>
+                        <p>Много зелени и крупная индустриальная зона.</p>
+                    </div>
+                </article>
+
+                <!-- 9. Заводской -->
+                <article style="background-image: url('https://images.unsplash.com/photo-1496372412473-e8548ffd82bc?auto=format&fit=crop&w=800&q=80');">
+                    <div class="card-spacer"></div>
+                    <h3 class="card-title">Заводской</h3>
+                    <div class="card-details">
+                        <table class="price-history">
+                            <thead><tr><th>Год</th><th>Цена (м²)</th></tr></thead>
+                            <tbody>
+                                <tr><td>2022</td><td>2 900 BYN</td></tr>
+                                <tr><td>2023</td><td>3 200 BYN</td></tr>
+                                <tr><td>2024</td><td>3 450 BYN</td></tr>
+                                <tr><td>2025</td><td>3 700 BYN</td></tr>
+                                <tr><td>2026</td><td>3 950 BYN</td></tr>
+                            </tbody>
+                        </table>
+                        <label>Доступность:</label>
+                        <meter value="0.55" min="0" max="1">55%</meter>
+                        <p>Самый низкий порог входа для инвестора.</p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section id="request">
+            <h2>Заказать экспресс-анализ цены</h2>
+            <p>Заполните форму, и мы пришлем вам сравнение цен по выбранному району в BYN.</p>
+            
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="fio">ФИО:</label>
+                    <input type="text" id="fio" name="fio" required placeholder="Введите ваше имя">
+                </div>
+
+                <div class="form-group">
+                    <label for="district-name">Интересующий район:</label>
+                    <input list="districts-list" id="district-name" name="district" placeholder="Выберите или введите...">
+                    <datalist id="districts-list">
+                        <option value="Центральный"></option>
+                        <option value="Советский"></option>
+                        <option value="Первомайский"></option>
+                        <option value="Партизанский"></option>
+                        <option value="Заводской"></option>
+                        <option value="Ленинский"></option>
+                        <option value="Октябрьский"></option>
+                        <option value="Московский"></option>
+                        <option value="Фрунзенский"></option>
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label>Желаемый бюджет (тыс. BYN):</label>
+                    <input type="range" name="price" min="150" max="1200" step="50" oninput="this.nextElementSibling.value = this.value">
+                    <output>450</output>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Контактный E-mail:</label>
+                    <input type="email" id="email" name="user_email" required placeholder="example@mail.by">
+                </div>
+
+                <button type="submit">Сформировать сводку</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Аналитика Недвижимости. Лабораторная работа №1.</p>
+    </footer>
+
+</body>
+</html>
